@@ -10,26 +10,15 @@ jobs:
   build:
     strategy:
       matrix:
-        include:
-          - distribution: 'temurin'
-            java_version: '11'
-            os: ubuntu-latest
-          - distribution: 'temurin'
-            java_version: '11'
-            os: macos-latest
-          # Java 17 seems to be unsupported right now
-          #- distribution: 'temurin'
-          #  java_version: '17'
-          #  os: ubuntu-latest
-          #- distribution: 'temurin'
-          #  java_version: '17'
-          #  os: macos-latest
-          - distribution: 'zulu'
-            java_version: '11'
-            os: ubuntu-latest
-          - distribution: 'zulu'
-            java_version: '11'
-            os: macos-latest
+        os:
+          - ubuntu-latest
+          - macos-latest
+        distribution:
+          - temurin
+          - zulu
+        java_version:
+          - 11
+          - 17
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -49,9 +38,11 @@ jobs:
 
       - name: Run code checks
         run: ./gradlew check
+        continue-on-error: ${{ matrix.java_version == '17' }}
 
       - name: Run unit tests
         run: ./gradlew --no-build-cache cleanTest test tests:test
+        continue-on-error: ${{ matrix.java_version == '17' }}
 
       - name: Build the Desktop app
         run: ./gradlew desktop:dist
