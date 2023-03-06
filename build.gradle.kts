@@ -162,16 +162,16 @@ project(":core") {
 
             "implementation"("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
 
-            "implementation"("junit:junit:4.13.1")
-            "implementation"("org.mockito:mockito-all:1.10.19")
+            "implementation"("junit:junit:4.13.2")
+            "implementation"("org.mockito:mockito-core:5.1.1")
 
             "implementation"("com.badlogicgames.gdx:gdx-backend-lwjgl3:${gdxVersion}")
             "implementation"("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
             "implementation"("com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion")
             "implementation"("com.badlogicgames.gdx:gdx:$gdxVersion")
 
-            "testImplementation"("junit:junit:4.13.1")
-            "testImplementation"("org.mockito:mockito-all:1.10.19")
+            "testImplementation"("junit:junit:4.13.2")
+            "testImplementation"("org.mockito:mockito-core:5.1.1")
             "testImplementation"("io.mockk:mockk:1.9.3")
 
             "testImplementation"("com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion")
