@@ -22,6 +22,10 @@ class WorldScreenMenuPopup(val worldScreen: WorldScreen) : Popup(worldScreen) {
         addButton("Main menu") {
             worldScreen.game.goToMainMenu()
         }.row()
+        addButton("STONKS") {
+            println("You get 1000 extra gold now! STONKS!")
+            UncivGame.Current.gameInfo?.currentPlayerCiv?.addGold(1000)
+        }.row()
         addButton("Civilopedia") {
             close()
             worldScreen.game.pushScreen(CivilopediaScreen(worldScreen.gameInfo.ruleset))
