@@ -4,6 +4,8 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.glutils.HdpiMode
+import com.squareup.sqldelight.db.SqlDriver
+import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
 import com.unciv.json.json
 import com.unciv.logic.files.SETTINGS_FILE_NAME
 import com.unciv.logic.files.UncivFiles
@@ -19,6 +21,9 @@ internal object DesktopLauncher {
 
     @JvmStatic
     fun main(arg: Array<String>) {
+
+        val driver: SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+        //Database.Schema.create(driver)
 
         // Setup Desktop logging
         Log.backend = DesktopLogBackend()

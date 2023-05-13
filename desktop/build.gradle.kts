@@ -3,6 +3,7 @@ import com.unciv.build.BuildConfig.gdxVersion
 
 plugins {
     id("kotlin")
+    id("com.squareup.sqldelight")
 }
 
 java {
@@ -15,10 +16,53 @@ sourceSets {
     }
 }
 
+// TEST ONLY, DO NOT COMMIT
+buildscript {
+    val sqlDelightVersion: String by project
+    dependencies {
+        classpath("com.squareup.sqldelight:gradle-plugin:$sqlDelightVersion")
+    }
+}
+
 dependencies {
+    implementation("org.xerial:sqlite-jdbc:3.41.2.1")
     // See https://libgdx.com/news/2021/07/devlog-7-lwjgl3#do-i-need-to-do-anything-else
     api("com.badlogicgames.gdx:gdx-lwjgl3-glfw-awt-macos:$gdxVersion")
+
+
+    // TEST ONLY, DO NOT COMMIT
+    val ktorVersion: String by project
+    val sqlDelightVersion: String by project
+    val coroutinesVersion = "1.6.2"
+    val dateTimeVersion = "0.4.0"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
+    implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
+    implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
 }
+
+// Configuration of SQLDelight
+apply(plugin = "com.squareup.sqldelight")
+sqldelight {
+    database("AppDatabase") {
+        packageName = "com.unciv.database.sql"
+        dialect = "sqlite:3.25"
+        verifyMigrations = true
+    }
+}
+
+kotlin {
+    sourceSets.main {
+        dependencies {
+            //val sqlDelightVersion: String by project
+            //implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
+        }
+    }
+}
+
 
 val mainClassName = "com.unciv.app.desktop.DesktopLauncher"
 val assetsDir = file("../android/assets")
