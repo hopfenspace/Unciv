@@ -7,6 +7,7 @@ import com.unciv.ui.components.UncivTextField
 import com.unciv.ui.components.input.onClick
 import com.unciv.ui.components.extensions.toTextButton
 import com.unciv.ui.screens.basescreen.BaseScreen
+import com.unciv.utils.Concurrency
 
 class AuthPopup(stage: Stage, authSuccessful: ((Boolean) -> Unit)? = null)
     : Popup(stage) {
@@ -20,7 +21,9 @@ class AuthPopup(stage: Stage, authSuccessful: ((Boolean) -> Unit)? = null)
 
         button.onClick {
             try {
-                UncivGame.Current.onlineMultiplayer.multiplayerServer.authenticate(passwordField.text)
+                // Using 'runBlocking' here is the easiest way to enforce the UI to behave as intended.
+                // It blocks the thread until the network call is done. It should be reworked in the future.
+                Concurrency.runBlocking { UncivGame.Current.onlineMultiplayer.authenticate(passwordField.text) }
                 authSuccessful?.invoke(true)
                 close()
             } catch (_: Exception) {
